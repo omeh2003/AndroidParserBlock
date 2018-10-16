@@ -3,6 +3,13 @@ import os
 import re
 from adb_android import adb_android
 
+# Имя папки для бэкапа
+dir_backup = "backup_tmp"
+
+# Бекапить большие разделы? (userdata, system_a, system_b etc)
+big_partition = False
+
+
 adb_android.wait_for_device()  # Ждем устройство
 
 # Получаем список разделов  с именами
@@ -41,17 +48,32 @@ if len(list_block_path) != len(list_name_partition):
     print("Длинна списков разная. Этого не может быть")
     exit(1)
 # Бекапимся
-if os.path.isdir("backup"):
+if os.path.isdir(dir_backup):
     print("Директория backup уже есть!")
     exit(1)
-if os.path.isfile("backup"):
+if os.path.isfile(dir_backup):
     print("backup это файл. Можно создавать каталог.")
-os.mkdir("backup")
+os.mkdir(dir_backup)
 real_path = os.getcwd()
-os.chdir("backup")
+os.chdir(dir_backup)
 
 while len(list_block_path) > 0:
-    adb_android.pull(list_block_path.pop(), list_name_partition.pop())
+    name = list_name_partition.pop()
+    block = list_block_path.pop()
+
+    if name == "userdata":
+        if not big_partition:
+            continue
+
+    if name == "system_a":
+        if not big_partition:
+            continue
+
+    if name == "system_b":
+        if not big_partition:
+            continue
+
+    adb_android.pull(block, name)
 
 os.chdir(real_path)
 pass
