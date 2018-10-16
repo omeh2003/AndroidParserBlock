@@ -166,3 +166,10 @@ fabric.properties
 # Editor-based Rest Client
 .idea/httpRequests
 
+backup/
+.idea/AndroidParserBlock.iml
+.idea/codeStyles/
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
